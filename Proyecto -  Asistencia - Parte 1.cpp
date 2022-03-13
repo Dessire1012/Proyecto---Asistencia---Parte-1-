@@ -1,5 +1,4 @@
-// Proyecto -  Asistencia - Parte 1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//Proyecto -  Asistencia - Parte 1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include <iostream>
 #include <fstream>
@@ -7,27 +6,55 @@
 #include "Alumno.h"
 
 using namespace std;
-string exec(string command) {
+
+void leerArchivo(string nombre) {
+    string e = "\\";
+    string nombreTxt = e + nombre.substr(nombre.length() - 45, 45);
+
+    ifstream txt (nombreTxt);
+    txt.open(nombreTxt, ios::in);
+    if (txt.is_open()) {
+        string linea;
+        while (getline(txt, linea))
+            cout << linea << endl;
+
+        txt.close();
+    }
+    else {
+        cout << "\n" << nombreTxt << "\n";
+    }
+    
+}
+
+void exec(string command) {
     char buffer[128];
+    int contador = 0;
     string resultado = "";
-    //Open pipe to file
+    
     FILE* pipe = _popen(command.c_str(), "r");
     if (!pipe) {
-        return "popen failed!";
+        cout << "popen failed!";
     }
-    //read till end of process:
+    
     while (!feof(pipe)) {
-        // use buffer to read and add to result
-        if (fgets(buffer, 128, pipe) != NULL)
+        if (fgets(buffer, 128, pipe) != NULL) {
             resultado += buffer;
+            contador++;
+        } 
+        if (contador == 2) {
+            cout << resultado;
+            leerArchivo(resultado);
+            contador = 0;
+            resultado = "";
+        }
+
     }
     _pclose(pipe);
-    return resultado;
 }
 
 int main()
 {
+    exec("dir /s/b \"Contenido del Curso\\2021-*.txt");
     vector <Alumno> alumno;
-    string dir = exec("dir /s/b \"Contenido del Curso\\2021-*.txt");
-    cout << dir << endl;
+    
 }
