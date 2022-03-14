@@ -8,10 +8,8 @@
 using namespace std;
 
 void leerArchivo(string nombre) {
-    string e = "\\";
-    string nombreTxt = e + nombre.substr(nombre.length() - 45, 45);
-
-    ifstream txt (nombreTxt);
+    string nombreTxt = nombre.substr(nombre.length() - 45, 44);
+    fstream txt;
     txt.open(nombreTxt, ios::in);
     if (txt.is_open()) {
         string linea;
@@ -20,10 +18,6 @@ void leerArchivo(string nombre) {
 
         txt.close();
     }
-    else {
-        cout << "\n" << nombreTxt << "\n";
-    }
-    
 }
 
 void exec(string command) {
@@ -56,5 +50,4 @@ int main()
 {
     exec("dir /s/b \"Contenido del Curso\\2021-*.txt");
     vector <Alumno> alumno;
-    
 }
