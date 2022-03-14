@@ -13,9 +13,9 @@ void leerArchivo(string nombre) {
     txt.open(nombreTxt, ios::in);
     if (txt.is_open()) {
         string linea;
-        while (getline(txt, linea))
+        while (getline(txt, linea)) 
             cout << linea << endl;
-
+           
         txt.close();
     }
 }
@@ -26,22 +26,25 @@ void exec(string command) {
     string resultado = "";
     
     FILE* pipe = _popen(command.c_str(), "r");
-    if (!pipe) {
+    if (!pipe) 
         cout << "popen failed!";
-    }
+    
     
     while (!feof(pipe)) {
+        if (contador == 1) 
+            cout << "\n*REVISANDO EL ARCHIVO: " << endl;
+        
         if (fgets(buffer, 128, pipe) != NULL) {
             resultado += buffer;
             contador++;
         } 
         if (contador == 2) {
             cout << resultado;
+            
             leerArchivo(resultado);
             contador = 0;
-            resultado = "";
+            resultado = "";  
         }
-
     }
     _pclose(pipe);
 }
