@@ -11,6 +11,7 @@ public:
 	Alumno(string Nombre);
 	void AsistenciaAudio();
 	void AsistenciaNoAudio();
+	string getNombre();
 	int getAsistencia();
 	int getAudio();
 	int getNo_Audio();

@@ -11,6 +11,10 @@ void Alumno::AsistenciaNoAudio() {
 	Asistencia++;
 	No_Audio++;
 };
+
+string Alumno::getNombre() {
+	return Nombre;
+}
 int Alumno::getAsistencia() {
 	return Asistencia;
 };
