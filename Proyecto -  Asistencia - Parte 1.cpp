@@ -16,6 +16,8 @@ int textoEspecial(string linea)
     else if (!linea.length())
         //Tercer caso: ""
         return 3;
+    else if (linea == "EXAMEN I" || linea == "ASISTIERON TODOS")
+        return 4;
     else if (linea.length() > 20) {
         // Segundo caso: no_audio (2)
         string lineaC = linea.substr(linea.length() - 10, 10);
@@ -70,7 +72,7 @@ void leerArchivo(string nombre) {
         string linea;
         while (getline(txt, linea))
         {
-            if (textoEspecial(linea) == 1 || textoEspecial(linea) == 3) // Ignorar "" � Fecha
+            if (textoEspecial(linea) == 1 || textoEspecial(linea) == 3 || textoEspecial(linea) == 4) // Ignorar "" � Fecha
             {
                 cout << "I";
             }
@@ -78,13 +80,13 @@ void leerArchivo(string nombre) {
             {
                 cout << "["  << obtenerNombre(linea) << "][A]";
                 if (buscarAlumno(linea)){
-                    cout << "FU";
+                    cout << "FU,";
                     agregarAsistencia(linea, false);
                     
                 }
                 else {
                     alumno.push_back(linea);
-                    cout << "NC";
+                    cout << "NC,";
                     agregarAsistencia(linea, false);
                 }
                 
@@ -93,17 +95,16 @@ void leerArchivo(string nombre) {
             {
                 cout << "[" << obtenerNombre(linea) << "][A]";
                 if (buscarAlumno(linea)) {
-                    cout << "FU";
+                    cout << "FU,";
                     agregarAsistencia(linea, true);
 
                 }
                 else {
                     alumno.push_back(linea);
-                    cout << "NC";
+                    cout << "NC,";
                     agregarAsistencia(linea, true);
                 }
             }
-            cout << ",";
         }
         txt.close();
     }
