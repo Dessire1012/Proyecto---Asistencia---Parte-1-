@@ -4,10 +4,11 @@ using namespace std;
 
 class Alumno {
 	string Nombre;
-	int Asistencia;
-	int Audio;
-	int No_Audio;
+	int Asistencia = 0;
+	int Audio = 0;
+	int No_Audio = 0;
 public:
+	Alumno();
 	Alumno(string Nombre);
 	void AsistenciaAudio();
 	void AsistenciaNoAudio();

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 #include "Alumno.h"
 
 using namespace std;
@@ -13,13 +14,14 @@ int textoEspecial(string linea)
     // Primer caso: fecha (1)
     if (linea[0] == '2')
         return 1;
+    //Segundo caso: ""
     else if (!linea.length())
-        //Tercer caso: ""
         return 3;
+    // Tercer caso: casos especiales
     else if (linea == "EXAMEN I" || linea == "ASISTIERON TODOS")
         return 4;
-    else if (linea.length() > 20) {
-        // Segundo caso: no_audio (2)
+    // Cuarto caso: no_audio (2)
+    else if (linea.length() > 10) {
         string lineaC = linea.substr(linea.length() - 10, 10);
         if (lineaC[0] == '-')
             return 2;
@@ -70,6 +72,8 @@ void leerArchivo(string nombre) {
     txt.open(nombreTxt, ios::in);
     if (txt.is_open()) {
         string linea;
+        string NameAlumno = "";
+        cout << "    ";
         while (getline(txt, linea))
         {
             if (textoEspecial(linea) == 1 || textoEspecial(linea) == 3 || textoEspecial(linea) == 4) // Ignorar "" � Fecha
@@ -78,31 +82,31 @@ void leerArchivo(string nombre) {
             }
             else if (textoEspecial(linea) == 2) // No tienen audio
             {
-                cout << "["  << obtenerNombre(linea) << "][A]";
-                if (buscarAlumno(linea)){
+                NameAlumno = obtenerNombre(linea);
+                cout << "[" << NameAlumno << "][A]";
+                if (buscarAlumno(NameAlumno)) {
                     cout << "FU,";
-                    agregarAsistencia(linea, false);
-                    
+                    agregarAsistencia(NameAlumno, false);
                 }
                 else {
-                    alumno.push_back(linea);
+                    alumno.push_back(NameAlumno);
                     cout << "NC,";
-                    agregarAsistencia(linea, false);
+                    agregarAsistencia(NameAlumno, false);
                 }
-                
+
             }
             else // Si tienen audio
             {
-                cout << "[" << obtenerNombre(linea) << "][A]";
-                if (buscarAlumno(linea)) {
+                NameAlumno = obtenerNombre(linea);
+                cout << "[" << NameAlumno << "][A]";
+                if (buscarAlumno(NameAlumno)) {
                     cout << "FU,";
-                    agregarAsistencia(linea, true);
-
+                    agregarAsistencia(NameAlumno, true);
                 }
                 else {
-                    alumno.push_back(linea);
+                    alumno.push_back(NameAlumno);
                     cout << "NC,";
-                    agregarAsistencia(linea, true);
+                    agregarAsistencia(NameAlumno, true);
                 }
             }
         }
@@ -130,6 +134,7 @@ void exec(string command) {
         }
         if (contador == 2) {
             cout << resultado;
+            cout << "\n";
             leerArchivo(resultado);
             contador = 0;
             resultado = "";
@@ -138,7 +143,39 @@ void exec(string command) {
     _pclose(pipe);
 }
 
+// Ordenar el vector de alumnos segun asistencias con audios
+//void ordenarAlumnos() {
+//    Alumno aux; // auxiliar
+//    for (int i = 0; i < alumno.size(); i++){
+//        for (int j = 0; j < alumno.size()-1; j++){
+//            if (alumno.at(j + 1).getAsistencia() > alumno.at(i).getAsistencia()) {
+//                aux = alumno.at(j + 1);
+//                alumno.at(j + 1) = alumno.at(j);
+//                alumno.at(j) = aux;
+//            }
+//        }
+//    }
+//}
+
+
+void mostrarAsistencia() {
+    // Titulo y titulos de tablas
+    cout << "\n\nLISTADO:\n=========\n\n";
+    cout << setw(16) << "ALUMNO" << setw(8) << "AUDIO" << setw(9) << "NO-AUDIO"
+        << setw(12) << "ASISTENCIAS" << setw(11) << "PORCENTAJE" << endl;
+    cout << setw(16) << "------" << setw(8) << "-----" << setw(9) << "--------"
+        << setw(12) << "-----------" << setw(11) << "----------" << endl;
+    // ordenarAlumnos();
+    // Imprimir alumnos
+    for (int i = 0; i < alumno.size(); i++) {
+        cout << setw(16) << alumno.at(i).getNombre() << setw(8) << alumno.at(i).getAudio() << setw(9) << alumno.at(i).getNo_Audio()
+            << setw(12) << alumno.at(i).getAsistencia() << setw(10) << setprecision(2) << fixed <<
+            (double)(alumno.at(i).getAudio() / alumno.at(i).getAsistencia()) * 100
+            << "%" << endl;
+    }
+}
 int main()
 {
     exec("dir /s/b \"Contenido del Curso\\2021-*.txt");
+    mostrarAsistencia();
 }
