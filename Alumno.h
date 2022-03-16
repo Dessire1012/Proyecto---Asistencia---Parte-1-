@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-class Alumno {
+struct Alumno {
 	string Nombre;
 	int Asistencia = 0;
 	int Audio = 0;

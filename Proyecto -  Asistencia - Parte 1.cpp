@@ -1,7 +1,8 @@
 ﻿//Proyecto -  Asistencia - Parte 1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 #include <iostream>
 #include <fstream>
-#include <vector>
+#include<algorithm>
+#include<vector>
 #include <iomanip>
 #include "Alumno.h"
 
@@ -143,19 +144,12 @@ void exec(string command) {
     _pclose(pipe);
 }
 
-// Ordenar el vector de alumnos segun asistencias con audios
-//void ordenarAlumnos() {
-//    Alumno aux; // auxiliar
-//    for (int i = 0; i < alumno.size(); i++){
-//        for (int j = 0; j < alumno.size()-1; j++){
-//            if (alumno.at(j + 1).getAsistencia() > alumno.at(i).getAsistencia()) {
-//                aux = alumno.at(j + 1);
-//                alumno.at(j + 1) = alumno.at(j);
-//                alumno.at(j) = aux;
-//            }
-//        }
-//    }
-//}
+ //Ordenar el vector de alumnos segun asistencias con audios
+void ordenarAlumnos() {
+    sort(alumno.begin(), alumno.end(), [](const Alumno& x, const Alumno& y) {
+        return x.Audio > y.Audio;
+        });
+}
 
 
 void mostrarAsistencia() {
@@ -165,7 +159,7 @@ void mostrarAsistencia() {
         << setw(12) << "ASISTENCIAS" << setw(11) << "PORCENTAJE" << endl;
     cout << setw(16) << "------" << setw(8) << "-----" << setw(9) << "--------"
         << setw(12) << "-----------" << setw(11) << "----------" << endl;
-    // ordenarAlumnos();
+    ordenarAlumnos();
     // Imprimir alumnos
     for (int i = 0; i < alumno.size(); i++) {
         double audio = static_cast<double>(alumno.at(i).getAudio());
