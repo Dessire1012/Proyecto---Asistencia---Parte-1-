@@ -160,7 +160,7 @@ void exec(string command) {
 
 void mostrarAsistencia() {
     // Titulo y titulos de tablas
-    cout << "\n\nLISTADO:\n=========\n\n";
+    cout << "\n\n*LISTADO:\n=========\n\n";
     cout << setw(16) << "ALUMNO" << setw(8) << "AUDIO" << setw(9) << "NO-AUDIO"
         << setw(12) << "ASISTENCIAS" << setw(11) << "PORCENTAJE" << endl;
     cout << setw(16) << "------" << setw(8) << "-----" << setw(9) << "--------"
@@ -168,10 +168,11 @@ void mostrarAsistencia() {
     // ordenarAlumnos();
     // Imprimir alumnos
     for (int i = 0; i < alumno.size(); i++) {
+        double audio = static_cast<double>(alumno.at(i).getAudio());
+        double asistencia = static_cast<double>(alumno.at(i).getAsistencia());
+        double porcentaje = (audio/asistencia) * 100;
         cout << setw(16) << alumno.at(i).getNombre() << setw(8) << alumno.at(i).getAudio() << setw(9) << alumno.at(i).getNo_Audio()
-            << setw(12) << alumno.at(i).getAsistencia() << setw(10) << setprecision(2) << fixed <<
-            (double)(alumno.at(i).getAudio() / alumno.at(i).getAsistencia()) * 100
-            << "%" << endl;
+            << setw(12) << alumno.at(i).getAsistencia() << setw(10) << setprecision(2) << fixed << porcentaje << "%" << endl;
     }
 }
 int main()
